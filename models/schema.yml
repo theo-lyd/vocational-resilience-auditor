@@ -50,6 +50,10 @@ models:
       - name: ags
         tests:
           - not_null
+          - unique
+      - name: graduates_total
+        tests:
+          - not_null
 
   - name: dim_district_resilience
     columns:
