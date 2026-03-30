@@ -66,6 +66,9 @@ The default scoring path now selects the best district model from `naive`, `line
 
 ## Quick Start
 
+- New complete beginner guide: `docs/tutorial-beginner-complete.md`
+- In a hurry? Jump straight to the 10-minute fast track: [Quick 10-Minute Path](docs/tutorial-beginner-complete.md#quick-10-minute-path-optional-fast-track)
+
 ## Phase-by-Phase Documentation
 
 - Full beginner-friendly implementation and presentation docs are in `docs/phases/README.md`.
