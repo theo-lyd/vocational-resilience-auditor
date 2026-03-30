@@ -69,6 +69,24 @@ The default scoring path now selects the best district model from `naive`, `line
 - New complete beginner guide: `docs/tutorial-beginner-complete.md`
 - In a hurry? Jump straight to the 10-minute fast track: [Quick 10-Minute Path](docs/tutorial-beginner-complete.md#quick-10-minute-path-optional-fast-track)
 
+## Launchers
+
+- One-command full system run (pipeline + dbt + dashboard):
+
+```bash
+./run_entire_system.sh
+```
+
+- Clickable launcher for Linux desktop environments:
+	- `Vocational-Resilience-Auditor.desktop`
+
+Troubleshooting (Linux desktop files):
+- If your file manager blocks launching the `.desktop` file as untrusted, right-click it and allow/mark as executable, or run:
+
+```bash
+chmod +x Vocational-Resilience-Auditor.desktop
+```
+
 ## Phase-by-Phase Documentation
 
 - Full beginner-friendly implementation and presentation docs are in `docs/phases/README.md`.

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Vocational Resilience Auditor
+Comment=Run full system pipeline, dbt, and dashboard
+Path=/workspaces/vocational-resilience-auditor
+Exec=/bin/bash -lc 'cd "$(dirname "%k")" && ./run_entire_system.sh'
+Icon=utilities-terminal
+Terminal=true
+Categories=Development;DataScience;
