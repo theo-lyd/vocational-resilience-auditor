@@ -1,8 +1,9 @@
 from __future__ import annotations
 
+from typing import Any, cast
+
 import numpy as np
 import pandas as pd
-
 
 RESILIENCE_SCORE_FORMULA = "forecasted_graduates / total_beds"
 
@@ -61,6 +62,12 @@ def compute_sensitivity(
 ) -> float | None:
     if graduates is None or beds is None or beds == 0:
         return None
+    if not np.isfinite(graduates) or not np.isfinite(beds):
+        return None
+    if not np.isfinite(bed_change_percent):
+        return None
+    if bed_change_percent < 0 or bed_change_percent >= 1:
+        return None
 
     baseline_ratio = graduates / beds
     if baseline_ratio == 0:
@@ -111,10 +118,16 @@ def enrich_resilience_with_methodology(resilience_df: pd.DataFrame) -> pd.DataFr
         axis=1,
     )
 
-    result["sensitivity_impact"] = result.apply(
-        lambda row: compute_sensitivity(row["forecasted_graduates"], row["total_beds"], bed_change_percent=0.1),
-        axis=1,
-    )
+    sensitivity_values: list[float | None] = []
+    for row in result.itertuples(index=False):
+        sensitivity_values.append(
+            compute_sensitivity(
+                graduates=cast(float | None, cast(Any, row.forecasted_graduates)),
+                beds=cast(float | None, cast(Any, row.total_beds)),
+                bed_change_percent=0.1,
+            )
+        )
+    result["sensitivity_impact"] = sensitivity_values
 
     p5, p95 = detect_outliers(result["resilience_score"])
 

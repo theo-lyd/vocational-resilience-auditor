@@ -4,7 +4,6 @@ import re
 from pathlib import Path
 from typing import Iterable
 
-
 _MIO_PATTERN = re.compile(r"^([+-]?\d+(?:[\.,]\d+)?)\s*(mio|m)$", re.IGNORECASE)
 _K_PATTERN = re.compile(r"^([+-]?\d+(?:[\.,]\d+)?)\s*k$", re.IGNORECASE)
 _COORD_PATTERN = re.compile(r"\[([^\]]+)\]\.\[([^\]]+)\]")

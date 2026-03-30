@@ -1,17 +1,17 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import Any, cast
 
 import duckdb
 import numpy as np
 import pandas as pd
 
-
 try:
     from prophet import Prophet
 
     PROPHET_AVAILABLE = True
-except Exception:
+except ImportError:
     Prophet = None
     PROPHET_AVAILABLE = False
 
@@ -54,7 +54,7 @@ def _predict_prophet(train: pd.DataFrame, target_year: int) -> float | None:
 
 
 def _build_forecast_records(history: pd.DataFrame, years_ahead: int = FORECAST_HORIZON_YEARS) -> pd.DataFrame:
-    records: list[dict[str, float | int | str]] = []
+    records: list[dict[str, object]] = []
 
     for ags, group in history.groupby("ags"):
         g = group.dropna(subset=["year", "graduates_total"]).sort_values("year")
@@ -102,7 +102,7 @@ def _build_forecast_records(history: pd.DataFrame, years_ahead: int = FORECAST_H
 
 
 def _backtest_models(history: pd.DataFrame) -> pd.DataFrame:
-    records: list[dict[str, float | int | str]] = []
+    records: list[dict[str, object]] = []
 
     for ags, group in history.groupby("ags"):
         g = group.dropna(subset=["year", "graduates_total"]).sort_values("year")
@@ -160,9 +160,13 @@ def _build_model_card(
         metrics_block = "No backtest metrics available (insufficient history)."
     else:
         metrics_lines = []
-        for row in model_metrics.sort_values(["model_name"])[["model_name", "districts_evaluated", "mae"]].itertuples(index=False):
+        for row in model_metrics.sort_values(["model_name"])[
+            ["model_name", "districts_evaluated", "mae"]
+        ].itertuples(index=False):
+            districts = int(cast(Any, row.districts_evaluated))
+            mae = float(cast(Any, row.mae))
             metrics_lines.append(
-                f"- {row.model_name}: districts={int(row.districts_evaluated)}, MAE={float(row.mae):.2f}"
+                f"- {row.model_name}: districts={districts}, MAE={mae:.2f}"
             )
         metrics_block = "\n".join(metrics_lines)
 
@@ -320,7 +324,7 @@ def build_resilience_methodology_report(
     output_path: Path,
 ) -> None:
     """Generate resilience score methodology specification document."""
-    outlier_count = int((resilience_df.get("outlier_flag", pd.Series([False])) == True).sum())
+    outlier_count = int(resilience_df.get("outlier_flag", pd.Series([False])).astype(bool).sum())
     high_sensitivity_count = int(
         (resilience_df.get("sensitivity_impact", pd.Series(dtype=float)).abs() > 15).sum()
     )

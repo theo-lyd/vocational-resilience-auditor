@@ -7,11 +7,16 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from io import StringIO
 from pathlib import Path
+from typing import Callable
 
 import pandas as pd
 
-from .normalization import decode_text_file, normalize_whitespace, parse_german_number, parse_genesis_coordinate
-
+from .normalization import (
+    decode_text_file,
+    normalize_whitespace,
+    parse_genesis_coordinate,
+    parse_german_number,
+)
 
 NS = {"genml": "https://www-genesis.destatis.de/xml/GENESIS-ML_V0_3"}
 
@@ -36,7 +41,7 @@ SOURCE_SPECS = (
 )
 
 
-def _find_start_line(lines: list[str], marker_predicate) -> int:
+def _find_start_line(lines: list[str], marker_predicate: Callable[[str], bool]) -> int:
     for idx, line in enumerate(lines):
         if marker_predicate(line):
             return idx
@@ -136,7 +141,7 @@ def ingest_hospital_capacity(path: Path) -> pd.DataFrame:
         ags = row[1].strip()
         district_name = normalize_whitespace(row[2])
 
-        record = {
+        record: dict[str, object] = {
             "date": date,
             "year": int(date[-4:]) if date[-4:].isdigit() else None,
             "ags": ags,

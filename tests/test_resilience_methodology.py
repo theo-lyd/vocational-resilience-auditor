@@ -44,6 +44,15 @@ def test_compute_sensitivity_reflects_bed_changes() -> None:
     no_beds = compute_sensitivity(graduates=100.0, beds=None, bed_change_percent=0.1)
     assert no_beds is None
 
+    invalid_percent = compute_sensitivity(graduates=100.0, beds=50.0, bed_change_percent=1.0)
+    assert invalid_percent is None
+
+    negative_percent = compute_sensitivity(graduates=100.0, beds=50.0, bed_change_percent=-0.2)
+    assert negative_percent is None
+
+    non_finite = compute_sensitivity(graduates=float("nan"), beds=50.0, bed_change_percent=0.1)
+    assert non_finite is None
+
 
 def test_detect_outliers_returns_percentiles() -> None:
     series = pd.Series([0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0, 4.5, 5.0] * 2)

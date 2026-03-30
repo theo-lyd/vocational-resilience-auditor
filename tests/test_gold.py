@@ -3,7 +3,12 @@ from __future__ import annotations
 import duckdb
 import pandas as pd
 
-from vra.gold import FORECAST_HORIZON_YEARS, _backtest_models, _build_forecast_records, build_gold_layer
+from vra.gold import (
+    FORECAST_HORIZON_YEARS,
+    _backtest_models,
+    _build_forecast_records,
+    build_gold_layer,
+)
 
 
 def test_build_forecast_records_contains_baselines() -> None:

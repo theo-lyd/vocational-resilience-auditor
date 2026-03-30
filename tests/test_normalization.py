@@ -1,4 +1,4 @@
-from vra.normalization import normalize_ags, parse_german_number, parse_genesis_coordinate
+from vra.normalization import normalize_ags, parse_genesis_coordinate, parse_german_number
 
 
 def test_parse_german_number_handles_special_tokens() -> None:

@@ -54,7 +54,8 @@ def evaluate_quality_and_sla(con: duckdb.DuckDBPyConnection) -> pd.DataFrame:
         "bronze_vocational_graduates",
     )
     for table_name in row_count_targets:
-        row_count = float(con.execute(f"select count(*) from {table_name}").fetchone()[0])
+        row = con.execute(f"select count(*) from {table_name}").fetchone()
+        row_count = float(row[0]) if row is not None else 0.0
         status = "pass" if row_count > 0 else "fail"
         rows.append(
             {
@@ -74,17 +75,16 @@ def evaluate_quality_and_sla(con: duckdb.DuckDBPyConnection) -> pd.DataFrame:
         "silver_hospital_capacity",
         "silver_vocational_graduates",
     ):
-        invalid_ratio = float(
-            con.execute(
-                f"""
-                select
-                    case when count(*) = 0 then 0.0
-                    else avg(case when ags_quality_flag = 'invalid_ags' then 1.0 else 0.0 end)
-                    end as invalid_ratio
-                from {table_name}
-                """
-            ).fetchone()[0]
-        )
+        invalid_row = con.execute(
+            f"""
+            select
+                case when count(*) = 0 then 0.0
+                else avg(case when ags_quality_flag = 'invalid_ags' then 1.0 else 0.0 end)
+                end as invalid_ratio
+            from {table_name}
+            """
+        ).fetchone()
+        invalid_ratio = float(invalid_row[0]) if invalid_row is not None else 0.0
         status = classify_ratio(invalid_ratio, max_ratio=0.05)
         rows.append(
             {

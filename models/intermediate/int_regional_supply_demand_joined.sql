@@ -54,7 +54,7 @@ select
     h.district_name,
     g.graduate_year,
     e.enrollment_year,
-    g.graduates_total,
+    coalesce(g.graduates_total, 0) as graduates_total,
     e.students_total,
     e.students_female,
     e.students_foreign,
@@ -70,7 +70,7 @@ select
     coalesce(g.graduates_total, 0) - coalesce(h.total_beds, 0) as supply_demand_gap,
     case
         when h.total_beds is null or h.total_beds = 0 then null
-        else g.graduates_total / h.total_beds
+        else coalesce(g.graduates_total, 0) / h.total_beds
     end as supply_demand_ratio,
     case
         when h.total_beds is null or h.total_beds = 0 then null
