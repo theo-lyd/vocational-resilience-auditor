@@ -1,6 +1,6 @@
 # Phase 3: Silver Normalization
 
-Status: Planned
+Status: Completed
 
 ## Purpose
 Convert Bronze raw values into stable, analytics-ready tables with consistent semantics.
@@ -9,18 +9,23 @@ Convert Bronze raw values into stable, analytics-ready tables with consistent se
 - Decision makers need comparable district data.
 - Normalization avoids false trends caused by formatting differences.
 
-## Technical scope
-- Strengthen German numeric and text normalization.
-- Add explicit AGS quality rules.
-- Create dimension tables for XML code labels.
-- Document null/placeholder behavior.
+## Technical scope completed
+- Added deterministic AGS normalization rules for 5-digit and 8-digit source codes.
+- Added AGS quality flags to track direct district values vs municipality rollups.
+- Added semantic labels for XML gender and degree codes in Silver and dbt staging.
+- Added codebook output model for stakeholder-readable semantics.
+- Extended unit tests for AGS normalization behavior.
 
 ## Key outputs
-- Silver data contract
-- Extended normalization tests
-- Updated data dictionary
+- Silver AGS standardization with quality flags.
+- Semantic code labels:
+	- Gender labels from code values.
+	- Degree labels from Destatis code tokens.
+- dbt codebook model: dim_vocational_graduates_codebook.
+- Extended normalization tests in Python.
+- Null taxonomy documentation in a dedicated file.
 
-## Done criteria
-- All Silver models pass tests.
-- AGS normalization is deterministic.
-- XML code columns are human-readable through mappings.
+## Validation status
+- Python unit tests pass.
+- AGS normalization is deterministic and explicit.
+- XML semantic columns are human-readable through labels and codebook model.

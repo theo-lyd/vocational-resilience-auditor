@@ -1,0 +1,52 @@
+version: 2
+
+models:
+  - name: stg_vocational_graduates
+    columns:
+      - name: ags
+        tests:
+          - not_null
+      - name: ags_quality_flag
+        tests:
+          - accepted_values:
+              values: ['district_direct', 'municipality_rolled_up', 'invalid_ags']
+              quote: true
+      - name: gender_code
+        tests:
+          - accepted_values:
+              values: ['%TOTAL%', 'GESM', 'GESW', 'GESD']
+              quote: true
+      - name: gender_label
+        tests:
+          - not_null
+      - name: degree_label
+        tests:
+          - not_null
+
+  - name: stg_hospital_capacity
+    columns:
+      - name: ags
+        tests:
+          - not_null
+      - name: ags_quality_flag
+        tests:
+          - accepted_values:
+              values: ['district_direct', 'municipality_rolled_up', 'invalid_ags']
+              quote: true
+      - name: total_beds
+        tests:
+          - not_null
+
+  - name: int_regional_supply_demand_joined
+    columns:
+      - name: ags
+        tests:
+          - not_null
+
+  - name: dim_district_resilience
+    columns:
+      - name: risk_band
+        tests:
+          - accepted_values:
+              values: ['Missing demand baseline', 'Systemic Risk', 'Watch', 'Resilient']
+              quote: true
