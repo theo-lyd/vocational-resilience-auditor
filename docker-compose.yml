@@ -1,0 +1,21 @@
+version: '3.9'
+
+services:
+  pipeline:
+    build:
+      context: .
+      dockerfile: Dockerfile.pipeline
+    volumes:
+      - ./:/app
+    command: python scripts/run_pipeline.py
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile.dashboard
+    ports:
+      - '8501:8501'
+    volumes:
+      - ./:/app
+    depends_on:
+      - pipeline

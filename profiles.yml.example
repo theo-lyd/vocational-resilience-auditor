@@ -1,0 +1,7 @@
+vocational_resilience_auditor:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: data/warehouse/vra.duckdb
+      threads: 4
