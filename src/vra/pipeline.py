@@ -10,8 +10,9 @@ import duckdb
 import pandas as pd
 
 from .bronze import BronzeConfig, write_bronze_outputs
-from .gold import build_gold_layer
+from .gold import build_gold_layer, build_resilience_methodology_report
 from .quality import evaluate_quality_and_sla
+from .resilience_methodology import enrich_resilience_with_methodology
 from .silver import build_silver_layer
 
 
@@ -92,6 +93,7 @@ def run_pipeline(
         gold_df: pd.DataFrame | None = None
         forecasts_df: pd.DataFrame | None = None
         forecast_errors_df: pd.DataFrame | None = None
+        resilience_methodology_df: pd.DataFrame | None = None
         quality_df: pd.DataFrame | None = None
 
         def run_stage(stage_name: str, stage_callable: Callable[[], None]) -> None:
@@ -149,11 +151,12 @@ def run_pipeline(
             build_silver_layer(con)
 
         def stage_gold_quality() -> None:
-            nonlocal gold_df, forecasts_df, forecast_errors_df, metadata_df, quality_df
+            nonlocal gold_df, forecasts_df, forecast_errors_df, resilience_methodology_df, metadata_df, quality_df
             gold_outputs = build_gold_layer(con, gold_output_dir=config.gold_dir)
             gold_df = gold_outputs["district_resilience"]
             forecasts_df = gold_outputs["forecasts"]
             forecast_errors_df = gold_outputs["forecast_errors"]
+            resilience_methodology_df = enrich_resilience_with_methodology(gold_df)
             metadata_df = con.execute("select * from bronze_ingestion_metadata").df()
             quality_df = evaluate_quality_and_sla(con)
 
@@ -165,6 +168,7 @@ def run_pipeline(
         assert gold_df is not None
         assert forecasts_df is not None
         assert forecast_errors_df is not None
+        assert resilience_methodology_df is not None
         assert metadata_df is not None
         assert quality_df is not None
         gold_df.to_parquet(config.gold_dir / "dim_district_resilience.parquet", index=False)
@@ -173,10 +177,17 @@ def run_pipeline(
         forecasts_df.to_csv(config.gold_dir / "fct_vocational_forecasts.csv", index=False)
         forecast_errors_df.to_parquet(config.gold_dir / "forecast_error_report.parquet", index=False)
         forecast_errors_df.to_csv(config.gold_dir / "forecast_error_report.csv", index=False)
+        resilience_methodology_df.to_parquet(config.gold_dir / "resilience_methodology_enriched.parquet", index=False)
+        resilience_methodology_df.to_csv(config.gold_dir / "resilience_methodology_enriched.csv", index=False)
         metadata_df.to_parquet(config.bronze_dir / "ingestion_metadata.parquet", index=False)
         metadata_df.to_csv(config.bronze_dir / "ingestion_metadata.csv", index=False)
         quality_df.to_parquet(config.gold_dir / "quality_sla_events.parquet", index=False)
         quality_df.to_csv(config.gold_dir / "quality_sla_events.csv", index=False)
+
+        build_resilience_methodology_report(
+            resilience_methodology_df,
+            output_path=config.gold_dir / "resilience_methodology_spec.md",
+        )
 
         failing = quality_df[quality_df["status"] == "fail"]
         warning = quality_df[quality_df["status"] == "warn"]

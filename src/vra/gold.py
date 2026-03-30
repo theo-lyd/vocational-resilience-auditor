@@ -313,3 +313,67 @@ def build_gold_layer(con: duckdb.DuckDBPyConnection, gold_output_dir: Path | Non
         "forecast_errors": backtest_df,
         "model_metrics": model_metrics,
     }
+
+
+def build_resilience_methodology_report(
+    resilience_df: pd.DataFrame,
+    output_path: Path,
+) -> None:
+    """Generate resilience score methodology specification document."""
+    outlier_count = int((resilience_df.get("outlier_flag", pd.Series([False])) == True).sum())
+    high_sensitivity_count = int(
+        (resilience_df.get("sensitivity_impact", pd.Series(dtype=float)).abs() > 15).sum()
+    )
+    low_confidence_count = int((resilience_df.get("confidence_score", pd.Series([1.0])) < 0.5).sum())
+
+    score_stats = resilience_df.get("resilience_score", pd.Series([]))
+    score_stats = score_stats.dropna()
+    if not score_stats.empty:
+        score_summary = (
+            f"- Score range: {score_stats.min():.2f} to {score_stats.max():.2f}\n"
+            f"- Mean: {score_stats.mean():.2f}\n"
+            f"- Median: {score_stats.median():.2f}\n"
+        )
+    else:
+        score_summary = "- No valid scores available.\n"
+
+    text = (
+        "# Resilience Score Methodology Specification\n\n"
+        "## Formula\n"
+        "$$\n"
+        "\\text{Resilience Score} = \\frac{\\text{Forecasted Graduates}}{\\text{Total Hospital Beds}}\n"
+        "$$\n\n"
+        "## Thresholds and Interpretation\n"
+        "- **Systemic Risk**: Score < 1.0 (more graduates than beds)\n"
+        "- **Watch**: Score >= 1.0 and < 2.0 (graduates-to-beds ratio between 1 and 2)\n"
+        "- **Resilient**: Score >= 2.0 (strong supply relative to demand)\n"
+        "- **Missing demand baseline**: No bed capacity data available\n\n"
+        "## Confidence Scoring\n"
+        "Confidence combines data completeness and forecast model selection:\n"
+        "- Full data + Prophet: ~1.1 (capped at 1.0)\n"
+        "- Full data + Linear: 1.0\n"
+        "- Full data + Naive: 0.9\n"
+        "- Partial data: 0.55–0.6 (varies by missing field)\n"
+        "- Minimal data: 0.2\n\n"
+        "## Sensitivity Analysis\n"
+        "Scores are recalculated if hospital bed capacity changes by ±10%. "
+        "Districts with >15% score swing are flagged as sensitive to demand assumptions.\n\n"
+        "## Fairness and Outlier Detection\n"
+        "- Outliers are districts outside the 5th–95th percentile of scores within their risk band.\n"
+        "- Extreme risk-band inconsistencies (e.g., score > 0.5 but tagged Systemic Risk) are also flagged.\n"
+        "- These flags alert to potential data quality issues or exceptional circumstances.\n\n"
+        "## Validation Summary\n"
+        f"- Total districts: {len(resilience_df)}\n"
+        f"- Districts with outlier flag: {outlier_count}\n"
+        f"- Districts with high sensitivity: {high_sensitivity_count}\n"
+        f"- Districts with low confidence: {low_confidence_count}\n\n"
+        "## Score Distribution\n"
+        f"{score_summary}\n"
+        "## Notes for Policymakers\n"
+        "1. This metric is transparent and reproducible for external audit.\n"
+        "2. Flagged districts warrant deeper investigation into data quality and local context.\n"
+        "3. The score is a _point-in-time_ proxy and should be combined with sector expertise.\n"
+        "4. Regular recalibration is recommended as new data arrives.\n"
+    )
+
+    output_path.write_text(text, encoding="utf-8")

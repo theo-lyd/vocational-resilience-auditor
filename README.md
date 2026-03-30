@@ -134,12 +134,15 @@ This runs the pipeline service and then serves the Streamlit dashboard.
 - Forecast artifact: `data/gold/fct_vocational_forecasts.csv`
 - Forecast backtest artifact: `data/gold/forecast_error_report.csv`
 - Forecast model card: `data/gold/forecast_model_card.md`
+- Resilience methodology enriched output: `data/gold/resilience_methodology_enriched.csv`
+- Resilience methodology specification: `data/gold/resilience_methodology_spec.md`
 
 ## Important Notes and Assumptions
 
 - The XML graduate dataset is currently decoded via coordinate codes. Human-readable codebook mapping can be added in a follow-up step by enriching `VALUE-ASSOC` / key metadata joins.
 - Vacancy rate is not directly present in the attached hospital dataset. The current baseline uses hospital bed capacity as the demand denominator.
-- Forecasting uses benchmarked district models (naive/linear and Prophet when available). External regressors are currently not included.
+- The resilience score methodology is formalized for transparency: see `data/gold/resilience_methodology_spec.md` for the complete formula, thresholds, and confidence/sensitivity/fairness rules.
+- Forecasting uses benchmarked district models (naive/linear and Prophet when available).
 
 ## Suggested Next Improvements
 

@@ -5,4 +5,5 @@ __all__ = [
     "pipeline",
     "quality",
     "normalization",
+    "resilience_methodology",
 ]
