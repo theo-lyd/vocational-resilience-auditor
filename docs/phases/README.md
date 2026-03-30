@@ -13,8 +13,8 @@ Execution order agreed for implementation:
 3. Phase 10 and 12 (continuous presentation readiness in parallel)
 
 Current implementation status in repository:
-- Completed now: Phase 2, 3, 4, 5, 6, 7, 8, 9, 11
-- Not started: Phase 10, 12
+- Completed now: Phase 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12
+- Not started: None
 
 Quick navigation:
 - Phase 2: `phase-02-bronze-reliability.md`
@@ -28,3 +28,9 @@ Quick navigation:
 - Phase 10: `phase-10-cicd-docs.md`
 - Phase 11: `phase-11-dashboard-policy-engine.md`
 - Phase 12: `phase-12-capstone-packaging.md`
+
+Capstone bundle quick links:
+- `../capstone/capstone-report-bundle.md`
+- `../capstone/reproducible-demo-runbook.md`
+- `../capstone/defense-deck-outline.md`
+- `../capstone/qa-appendix.md`
