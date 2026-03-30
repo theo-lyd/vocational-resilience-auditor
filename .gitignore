@@ -203,9 +203,15 @@ cython_debug/
 data/bronze/
 data/gold/
 data/warehouse/
+data/raw/*
+!data/raw/README.md
+!data/raw/manifest.sha256
+!data/raw/samples/
+!data/raw/samples/**
 target/
 dbt_packages/
 profiles.yml
+.user.yml
 .cursorignore
 .cursorindexingignore
 

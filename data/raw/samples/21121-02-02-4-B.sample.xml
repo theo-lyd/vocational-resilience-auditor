@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GENESIS xmlns="https://www-genesis.destatis.de/xml/GENESIS-ML_V0_3">
+  <DATASET NAME="DS_003">
+    <VALUES>
+      <VALUE COORDINATE="([GES].[%TOTAL%],[JAHR].[2024],[KREISE].[01001],[BILAG3].[BILABB10])" ORIG="123" CONTENT="sample" QUALITY="A" />
+      <VALUE COORDINATE="([GES].[GESW],[JAHR].[2024],[KREISE].[01001],[BILAG3].[BILABB11])" ORIG="45" CONTENT="sample" QUALITY="A" />
+    </VALUES>
+  </DATASET>
+</GENESIS>

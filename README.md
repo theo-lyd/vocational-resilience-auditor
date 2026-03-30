@@ -152,6 +152,13 @@ This runs the pipeline service and then serves the Streamlit dashboard.
 - The resilience score methodology is formalized for transparency: see `data/gold/resilience_methodology_spec.md` for the complete formula, thresholds, and confidence/sensitivity/fairness rules.
 - Forecasting uses benchmarked district models (naive/linear and Prophet when available).
 
+## Data Versioning Policy
+
+- Full raw source files in `data/raw/` are treated as local runtime inputs and are not committed.
+- Version-controlled demo fixtures live in `data/raw/samples/`.
+- Checksum metadata for local full files is stored in `data/raw/manifest.sha256`.
+- Raw data handling details are documented in `data/raw/README.md`.
+
 ## Suggested Next Improvements
 
 1. Add a dedicated codebook dimension for XML classification keys and map `BILAG3` and `GES` codes to labels.
