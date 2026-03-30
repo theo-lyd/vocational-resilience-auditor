@@ -54,6 +54,7 @@ This baseline uses district linear trend extrapolation on historical graduate ou
 - `src/vra/gold.py`: forecasting proxy + resilience score.
 - `src/vra/pipeline.py`: orchestration.
 - `scripts/run_pipeline.py`: entrypoint.
+- `scripts/run_orchestrated_pipeline.py`: retry-capable orchestration runner.
 - `models/`: dbt staging/intermediate/mart models.
 - `.github/workflows/ci.yml`: CI pipeline.
 - `Dockerfile.pipeline`, `Dockerfile.dashboard`, `docker-compose.yml`: containerized execution.
@@ -79,6 +80,12 @@ pip install -e .
 
 ```bash
 python scripts/run_pipeline.py
+```
+
+Orchestrated run with retry and trigger metadata:
+
+```bash
+python scripts/run_orchestrated_pipeline.py --trigger cron --max-retries 2 --retry-delay-seconds 30
 ```
 
 ### 3. Launch Dashboard
@@ -115,6 +122,12 @@ docker compose up --build
 ```
 
 This runs the pipeline service and then serves the Streamlit dashboard.
+
+## Operational Observability
+
+- Run summary artifact: `data/gold/pipeline_run_summary.csv`
+- Stage events artifact: `data/gold/pipeline_run_events.csv`
+- Quality and SLA artifact: `data/gold/quality_sla_events.csv`
 
 ## Important Notes and Assumptions
 
