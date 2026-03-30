@@ -1,11 +1,12 @@
 from __future__ import annotations
 
+import logging
 from pathlib import Path
 
 from vra.pipeline import PipelineConfig, run_pipeline
 
-
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO, format="%(message)s")
     root = Path(__file__).resolve().parents[1]
     config = PipelineConfig(
         project_root=root,

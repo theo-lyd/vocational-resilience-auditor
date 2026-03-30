@@ -4,6 +4,8 @@ __all__ = [
     "gold",
     "pipeline",
     "quality",
+    "errors",
     "normalization",
     "resilience_methodology",
+    "policy_engine",
 ]
