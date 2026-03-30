@@ -1,6 +1,6 @@
 # Phase 10: CI/CD and Documentation Automation
 
-Status: Planned (parallel track)
+Status: Completed
 
 ## Purpose
 Make the project maintainable with automated quality gates and docs publishing.
@@ -22,3 +22,22 @@ Make the project maintainable with automated quality gates and docs publishing.
 ## Done criteria
 - Every PR runs relevant checks only.
 - Latest docs are automatically published.
+
+## What was implemented
+- CI relevance filtering in `.github/workflows/ci.yml` via `paths-ignore` for docs-only changes, so heavy code checks run when they are relevant.
+- Added GitHub Pages automation in `.github/workflows/docs-pages.yml`:
+	- builds pipeline and dbt artifacts,
+	- runs `dbt docs generate`,
+	- publishes dbt docs plus project docs to Pages.
+- Added closeout/capstone documentation artifacts under `docs/capstone/` for release-ready documentation coverage.
+
+## Validation commands
+```bash
+python scripts/run_pipeline.py
+cp profiles.yml.example profiles.yml
+dbt run --profiles-dir .
+dbt docs generate --profiles-dir .
+ruff check .
+mypy
+pytest -q
+```
