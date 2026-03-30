@@ -36,7 +36,10 @@ These are created in DuckDB after type coercion, AGS normalization, and district
 
 ### Gold
 
-- `gold_district_resilience` combines graduate forecast proxies with latest hospital bed capacity.
+- `gold_district_resilience` combines district forecast outputs with latest hospital bed capacity.
+- `fct_vocational_forecasts` stores model-level district forecasts over a 5-year horizon.
+- `fct_vocational_forecast_errors` stores district backtest error rows for model benchmarking.
+- `forecast_model_card.md` documents assumptions, strengths, limits, and MAE summary.
 - A district-level score and `risk_band` are generated:
 - A quality/SLA monitor now writes `quality_sla_events` to DuckDB and `data/gold/quality_sla_events.csv` for operational visibility.
 
@@ -44,7 +47,7 @@ $$
 	ext{resilience\_score} = \frac{\text{forecasted\_graduates}}{\text{total\_beds}}
 $$
 
-This baseline uses district linear trend extrapolation on historical graduate outputs from XML.
+The default scoring path now selects the best district model from `naive`, `linear`, and `prophet` (if installed), using holdout-year MAE.
 
 ## Repository Layout
 
@@ -128,12 +131,15 @@ This runs the pipeline service and then serves the Streamlit dashboard.
 - Run summary artifact: `data/gold/pipeline_run_summary.csv`
 - Stage events artifact: `data/gold/pipeline_run_events.csv`
 - Quality and SLA artifact: `data/gold/quality_sla_events.csv`
+- Forecast artifact: `data/gold/fct_vocational_forecasts.csv`
+- Forecast backtest artifact: `data/gold/forecast_error_report.csv`
+- Forecast model card: `data/gold/forecast_model_card.md`
 
 ## Important Notes and Assumptions
 
 - The XML graduate dataset is currently decoded via coordinate codes. Human-readable codebook mapping can be added in a follow-up step by enriching `VALUE-ASSOC` / key metadata joins.
 - Vacancy rate is not directly present in the attached hospital dataset. The current baseline uses hospital bed capacity as the demand denominator.
-- Forecasting currently uses a linear proxy to keep runtime and dependencies lightweight. Prophet can be added as an optional model layer with regressors.
+- Forecasting uses benchmarked district models (naive/linear and Prophet when available). External regressors are currently not included.
 
 ## Suggested Next Improvements
 
