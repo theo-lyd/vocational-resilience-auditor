@@ -103,6 +103,14 @@ streamlit run app.py
 pytest -q
 ```
 
+### 5. Run Quality Gates
+
+```bash
+ruff check .
+mypy
+pytest -q
+```
+
 ## dbt Usage
 
 Create a local profile from the example:

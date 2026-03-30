@@ -1,0 +1,5 @@
+{
+  "python.defaultInterpreterPath": "/workspaces/vocational-resilience-auditor/.venv/bin/python",
+  "dbt.dbtIntegration": "core",
+  "dbt.dbtPythonPathOverride": "/usr/local/bin/python"
+}
