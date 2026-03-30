@@ -38,6 +38,7 @@ These are created in DuckDB after type coercion, AGS normalization, and district
 
 - `gold_district_resilience` combines graduate forecast proxies with latest hospital bed capacity.
 - A district-level score and `risk_band` are generated:
+- A quality/SLA monitor now writes `quality_sla_events` to DuckDB and `data/gold/quality_sla_events.csv` for operational visibility.
 
 $$
 	ext{resilience\_score} = \frac{\text{forecasted\_graduates}}{\text{total\_beds}}

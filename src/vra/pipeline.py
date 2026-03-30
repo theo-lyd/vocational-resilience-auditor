@@ -7,6 +7,7 @@ import duckdb
 
 from .bronze import BronzeConfig, write_bronze_outputs
 from .gold import build_gold_layer
+from .quality import evaluate_quality_and_sla
 from .silver import build_silver_layer
 
 
@@ -59,10 +60,21 @@ def run_pipeline(config: PipelineConfig) -> None:
         build_silver_layer(con)
         gold_df = build_gold_layer(con)
         metadata_df = con.execute("select * from bronze_ingestion_metadata").df()
+        quality_df = evaluate_quality_and_sla(con)
 
         gold_df.to_parquet(config.gold_dir / "dim_district_resilience.parquet", index=False)
         gold_df.to_csv(config.gold_dir / "dim_district_resilience.csv", index=False)
         metadata_df.to_parquet(config.bronze_dir / "ingestion_metadata.parquet", index=False)
         metadata_df.to_csv(config.bronze_dir / "ingestion_metadata.csv", index=False)
+        quality_df.to_parquet(config.gold_dir / "quality_sla_events.parquet", index=False)
+        quality_df.to_csv(config.gold_dir / "quality_sla_events.csv", index=False)
+
+        failing = quality_df[quality_df["status"] == "fail"]
+        warning = quality_df[quality_df["status"] == "warn"]
+        if not failing.empty or not warning.empty:
+            print(
+                f"Quality monitor: {len(failing)} fail, {len(warning)} warn. "
+                "See data/gold/quality_sla_events.csv"
+            )
     finally:
         con.close()

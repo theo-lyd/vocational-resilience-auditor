@@ -209,6 +209,9 @@ def write_bronze_outputs(config: BronzeConfig) -> dict[str, Path]:
         (SOURCE_SPECS[2], graduate_sources),
     ):
         for source_path in paths:
+            source_mtime = datetime.fromtimestamp(
+                source_path.stat().st_mtime, tz=timezone.utc
+            ).replace(microsecond=0)
             metadata_rows.append(
                 {
                     "ingestion_started_at": ingestion_started_at,
@@ -216,6 +219,7 @@ def write_bronze_outputs(config: BronzeConfig) -> dict[str, Path]:
                     "source_format": spec.format,
                     "source_file": source_path.name,
                     "source_path": str(source_path),
+                    "source_last_modified_at": source_mtime.isoformat(),
                     "source_checksum_sha256": _checksum_sha256(source_path),
                     "source_size_bytes": source_path.stat().st_size,
                 }
