@@ -9,8 +9,9 @@ models:
       - name: ags_quality_flag
         tests:
           - accepted_values:
-              values: ['district_direct', 'municipality_rolled_up', 'invalid_ags']
-              quote: true
+              arguments:
+                values: ['district_direct', 'municipality_rolled_up', 'invalid_ags']
+                quote: true
 
   - name: stg_vocational_graduates
     columns:
@@ -20,13 +21,15 @@ models:
       - name: ags_quality_flag
         tests:
           - accepted_values:
-              values: ['district_direct', 'municipality_rolled_up', 'invalid_ags']
-              quote: true
+              arguments:
+                values: ['district_direct', 'municipality_rolled_up', 'invalid_ags']
+                quote: true
       - name: gender_code
         tests:
           - accepted_values:
-              values: ['%TOTAL%', 'GESM', 'GESW', 'GESD']
-              quote: true
+              arguments:
+                values: ['%TOTAL%', 'GESM', 'GESW', 'GESD']
+                quote: true
       - name: gender_label
         tests:
           - not_null
@@ -42,8 +45,9 @@ models:
       - name: ags_quality_flag
         tests:
           - accepted_values:
-              values: ['district_direct', 'municipality_rolled_up', 'invalid_ags']
-              quote: true
+              arguments:
+                values: ['district_direct', 'municipality_rolled_up', 'invalid_ags']
+                quote: true
 
   - name: int_regional_supply_demand_joined
     columns:
@@ -60,8 +64,9 @@ models:
       - name: risk_band
         tests:
           - accepted_values:
-              values: ['Missing demand baseline', 'Systemic Risk', 'Watch', 'Resilient']
-              quote: true
+              arguments:
+                values: ['Missing demand baseline', 'Systemic Risk', 'Watch', 'Resilient']
+                quote: true
 
 snapshots:
   - name: snp_vocational_enrollment_scd2
