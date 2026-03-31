@@ -69,6 +69,11 @@ The default scoring path now selects the best district model from `naive`, `line
 - New complete beginner guide: `docs/tutorial-beginner-complete.md`
 - In a hurry? Jump straight to the 10-minute fast track: [Quick 10-Minute Path](docs/tutorial-beginner-complete.md#quick-10-minute-path-optional-fast-track)
 
+## Engineering Retrospective
+
+- Project issue timeline, root causes, resolutions, prevention patterns, and lessons learned:
+	[Project Issues Retrospective](docs/project-issues-retrospective.md)
+
 ## Launchers
 
 - One-command full system run (pipeline + dbt + dashboard):
