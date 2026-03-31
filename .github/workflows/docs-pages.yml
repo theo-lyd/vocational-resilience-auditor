@@ -6,6 +6,8 @@ on:
     branches: [master]
     paths:
       - docs/**
+      - src/**
+      - scripts/**
       - models/**
       - macros/**
       - snapshots/**
