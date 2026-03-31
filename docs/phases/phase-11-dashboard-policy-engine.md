@@ -28,17 +28,21 @@ Translate analytics into an explainable decision interface.
   - Evidence-based recommendations combining risk band, confidence, outlier status, and sensitivity
   - Confidence scoring: uses data completeness and flag status to communicate recommendation reliability
   - Markdown report generation for district drill-down
-- Enhanced Streamlit dashboard (`app.py`) with 5 integrated tabs:
-  1. **Overview**: Quick metrics, risk distribution, score histogram
-  2. **Map View**: Geographic summary (GeoJSON integration roadmap noted)
-  3. **Trends**: Forecast graduates and hospital beds trends by risk band
-  4. **Policy**: Interactive district drill-down with tailored recommendations and caveats
-  5. **Details**: Filterable data explorer with CSV export
+- Enhanced Streamlit dashboard (`app.py`) with 6 integrated tabs:
+  1. **Executive**: headline metrics, risk exposure summary, and auto-generated critical findings
+  2. **Risk Diagnostics**: supply-vs-demand diagnostics, demand-gap leaderboard, confidence/sensitivity view
+  3. **Model Diagnostics**: backtest quality (MAE) and model reliability comparisons
+  4. **Policy Drilldown**: district-level recommendation output with caveats and methodology notes
+  5. **Operations**: pipeline run health, quality/SLA checks, and run-over-run change narrative
+  6. **Data Explorer**: filterable district table with CSV export
 - Added safety guardrails:
   - Rejects unsafe language ("closed", "eliminate", "cut funding entirely")
   - Flags low-confidence recommendations
   - Explains caveats for outliers and sensitive scores
   - Caps recommendation length at 500 characters
+- Added narrative insight automation:
+  - `Top 5 Critical Findings` generated from latest run metrics
+  - `What Changed Since Last Run` generated from pipeline and quality history
 - Added comprehensive tests in `tests/test_policy_engine.py`
 
 ## Why this matters

@@ -40,7 +40,7 @@
 - Speaking note: Highlight production-readiness posture
 
 ## Slide 8: Dashboard and Policy Layer
-- Overview, trends, policy recommendations, data explorer
+- Executive, risk diagnostics, model diagnostics, policy drilldown, operations, and data explorer
 - Guardrails for recommendation safety
 - Speaking note: Explain how non-technical users consume outcomes
 

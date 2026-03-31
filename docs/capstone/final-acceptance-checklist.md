@@ -153,7 +153,7 @@ Evidence summary:
 - Workflow behavior:
 	- builds pipeline outputs,
 	- runs `dbt docs generate`,
-	- publishes dbt and project docs via GitHub Pages.
+	- publishes dbt and project docs as a CI artifact (`docs-site`).
 
 ### J. Capstone bundle files present
 Status: PASS
