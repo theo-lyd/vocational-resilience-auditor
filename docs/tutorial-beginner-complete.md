@@ -275,11 +275,12 @@ streamlit run app.py
 Open the local URL printed by Streamlit (usually `http://localhost:8501`).
 
 Dashboard tabs explain:
-- summary metrics
-- risk distribution
-- trend views
-- policy recommendation output
-- detailed downloadable table
+- Executive summary and auto-generated top findings
+- Risk diagnostics (supply vs demand and demand-gap leaderboard)
+- Model diagnostics (backtest quality and MAE comparison)
+- Policy drilldown with district-level recommendation and notes
+- Operations health (pipeline/quality checks and run-over-run change notes)
+- Detailed downloadable data explorer
 
 If dashboard says gold output is missing:
 - run the pipeline first.
@@ -344,6 +345,7 @@ Cause: expected files are missing in `data/raw/`.
 Fix:
 - place required raw source files in `data/raw/`.
 - ensure filenames match expected patterns in `src/vra/bronze.py`.
+- if full raw files are unavailable, keep versioned fixtures in `data/raw/samples/` (pipeline falls back to samples automatically).
 
 ### Error: `ModuleNotFoundError: vra`
 Cause: package not installed in editable mode.
