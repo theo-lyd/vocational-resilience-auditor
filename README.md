@@ -79,6 +79,11 @@ The default scoring path now selects the best district model from `naive`, `line
 - Project issue timeline, root causes, resolutions, prevention patterns, and lessons learned:
 	[Project Issues Retrospective](docs/project-issues-retrospective.md)
 
+## Interview Prep
+
+- Expert-level interview question and answer simulation pack:
+	[Interview Prep (Expert Q&A)](docs/capstone/interview-prep-expert-qa.md)
+
 ## Command References
 
 - Consolidated command manuals by tooling family:

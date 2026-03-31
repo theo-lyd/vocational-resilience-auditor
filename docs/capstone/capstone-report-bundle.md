@@ -39,4 +39,5 @@ The project implements a Medallion-style data architecture:
 - Reproducible runbook: `docs/capstone/reproducible-demo-runbook.md`
 - Defense deck outline: `docs/capstone/defense-deck-outline.md`
 - Q&A appendix: `docs/capstone/qa-appendix.md`
+- Interview prep pack: `docs/capstone/interview-prep-expert-qa.md`
 - Final acceptance checklist: `docs/capstone/final-acceptance-checklist.md`
