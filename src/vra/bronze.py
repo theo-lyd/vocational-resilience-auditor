@@ -69,8 +69,13 @@ def _union_by_name(frames: list[pd.DataFrame]) -> pd.DataFrame:
 def _discover_sources(raw_dir: Path, spec: SourceSpec) -> list[Path]:
     matches = sorted(raw_dir.glob(spec.pattern))
     if not matches:
+        sample_dir = raw_dir / "samples"
+        matches = sorted(sample_dir.glob(spec.pattern))
+    if not matches:
         raise FileNotFoundError(
-            f"No input files found for {spec.logical_name} with pattern '{spec.pattern}' in {raw_dir}"
+            "No input files found for "
+            f"{spec.logical_name} with pattern '{spec.pattern}' in {raw_dir} "
+            f"or fallback sample directory {raw_dir / 'samples'}"
         )
     return matches
 
